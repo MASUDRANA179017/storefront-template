@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hover-theme-bg:hover {
+  background-color: var(--color-primary);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #fff;
+  transition: filter 150ms ease, transform 100ms ease;
+}
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.card-hover {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.18);
+}
+
+.slide-fade-enter {
+  animation: slideFadeIn 400ms ease both;
+}
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.drawer-panel {
+  animation: drawerIn 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes drawerIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.drawer-panel-left {
+  animation: drawerInLeft 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes drawerInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.gradient-accent {
+  background-image: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+}
+
+.gradient-text {
+  background-image: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.icon-btn-accent {
+  background-image: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: #fff;
+  transition: filter 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+}
+.icon-btn-accent:hover {
+  filter: brightness(1.08);
+}
+.icon-btn-accent:active {
+  transform: scale(0.96);
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 2.5px solid rgba(148, 163, 184, 0.25);
+  border-top-color: var(--color-primary, #3b82f6);
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(148, 163, 184, 0.18);
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: skeletonShimmer 1.6s infinite;
+}
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
