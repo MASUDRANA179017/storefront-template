@@ -1,10 +1,30 @@
-# Your Storefront Website
+# Storefront Templates
 
-This is a ready-to-build frontend for your shop, pre-configured to pull products, categories, and branding from your shop's API.
+A ready-to-build React (Vite + Tailwind) storefront for shops on the marketplace platform, pre-configured to pull products, categories, banners, and branding from your shop's API.
+
+## Branches
+
+This repo ships one branch per template, so you can start from whichever look fits your shop. Every branch contains the **full, identical codebase** — all 5 templates are always available and switchable via `VITE_TEMPLATE` — branches only differ in which template is the default.
+
+| Branch | Default template | Best for |
+|---|---|---|
+| `main` / `modern-minimal` | Modern Minimal | Clean, whitespace-driven, general retail |
+| `bold-boutique` | Bold Boutique | High-contrast, dark, fashion/boutique |
+| `grocery-fresh` | Grocery Fresh | Dense grid, many SKUs, grocery/convenience |
+| `fashion-editorial` | Fashion Editorial | Lookbook-style, apparel/lifestyle |
+| `electronics-tech` | Electronics Tech | Dark technical palette, spec-driven |
+
+Pick a branch, or just clone `main` and set `VITE_TEMPLATE` yourself — nothing is removed on any branch.
+
+## Customizing
+
+- **Colors**: your shop's primary/secondary accent colors are pulled live from the API and applied via CSS variables — no code changes needed.
+- **Homepage layout**: which sections appear on the homepage (flash sale, best sellers, reviews, FAQ, etc.) and their order is configurable per shop from the shop-owner dashboard's "Homepage Layout" panel, not hardcoded here.
+- **Template-specific look**: each template's visual identity (fonts, spacing, header/footer style) lives in `src/templates/<template>/Home.jsx` and `src/lib/templateChrome.js` (shared header/footer chrome for non-homepage pages) — edit these directly for deeper customization.
 
 ## 1. Configure
 
-If `.env.production` isn't already present (it's added automatically when you download this from your shop dashboard), copy `.env.example` to `.env` and fill in:
+Copy `.env.example` to `.env` and fill in:
 
 - `VITE_API_BASE_URL` — your marketplace's API URL
 - `VITE_SHOP_SLUG` — your shop's slug
@@ -28,14 +48,4 @@ Upload the contents of `dist/` to any static host — your own hosting account, 
 ```
 npm install
 npm run dev
-```
-
-## Maintainers: rebuilding the in-dashboard live preview
-
-The shop-owner "Storefront Template" page embeds this same build (served from the main app's `public/storefront-preview/`) so template/color changes can be previewed live before a shop owner downloads their own copy. It reads `?shop=`, `?template=`, `?primary=`, `?secondary=` from the URL at runtime instead of baked env vars. Rebuild it after changing any template:
-
-```
-npm run build
-rm -rf ../public/storefront-preview && mkdir ../public/storefront-preview
-cp -r dist/* ../public/storefront-preview/
 ```
