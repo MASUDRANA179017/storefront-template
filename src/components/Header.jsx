@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../lib/CartContext';
 import { useAuth } from '../lib/AuthContext';
@@ -176,7 +177,7 @@ export function Header({ shop, categories = [], className = '', logoClassName = 
         </button>
       </div>
 
-      {mobileOpen && (
+      {mobileOpen && createPortal(
         <div className="md:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
           <div className={`drawer-panel-left relative w-full max-w-xs h-full shadow-lifted flex flex-col mr-auto ${panelBg}`}>
@@ -261,7 +262,8 @@ export function Header({ shop, categories = [], className = '', logoClassName = 
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </header>
   );
