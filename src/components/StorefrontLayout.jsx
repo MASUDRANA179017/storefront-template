@@ -5,6 +5,8 @@ import { resolveTemplateSlug } from '../lib/resolveTemplate';
 import { TEMPLATE_CHROME } from '../lib/templateChrome';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { HotlineBar } from './HotlineBar';
+import { CategoryIconRow } from './CategoryIconRow';
 
 // Shared Header + Footer chrome for every page that isn't the homepage
 // (the homepage templates render their own, matching their unique layout).
@@ -32,8 +34,10 @@ export function StorefrontLayout() {
   }
 
   return (
-    <div className={chrome.wrapperClassName} style={theme.style}>
+    <div className={`${chrome.wrapperClassName} pb-16 md:pb-0`} style={theme.style}>
+      <HotlineBar shop={shop} />
       <Header shop={shop} categories={categories} className={chrome.headerClassName} logoClassName={chrome.logoClassName} style={headerStyle} dark={!!chrome.dark} />
+      <CategoryIconRow categories={categories} />
       <main className="flex-1">
         <Outlet />
       </main>
