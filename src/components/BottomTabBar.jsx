@@ -1,6 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../lib/CartContext';
-import { useMobileMenu } from '../lib/MobileMenuContext';
+import { useAuth } from '../lib/AuthContext';
+import { useNotifications } from '../lib/NotificationContext';
+import { useDarkMode } from '../lib/DarkModeContext';
 
 function HomeIcon({ className }) {
   return (
@@ -26,21 +28,31 @@ function CartIcon({ className }) {
   );
 }
 
-function MenuIcon({ className }) {
+function BellIcon({ className }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+    </svg>
+  );
+}
+
+function UserIcon({ className }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
     </svg>
   );
 }
 
 // Fixed bottom mobile tab bar, mounted once globally so it persists across
-// every page. The "Menu" tab opens the same drawer as Header's hamburger via
-// MobileMenuContext, since they're separate component instances.
-export function BottomTabBar({ dark = false }) {
+// every page. The hamburger for the full menu (About, categories list,
+// sign-in) now lives in Header's top-left on mobile instead of here.
+export function BottomTabBar() {
   const { pathname } = useLocation();
-  const { itemCount, setDrawerOpen } = useCart();
-  const { setMobileOpen } = useMobileMenu();
+  const { itemCount } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { unreadCount } = useNotifications();
+  const { dark } = useDarkMode();
 
   const barBg = dark ? 'bg-slate-900 border-white/10' : 'bg-white border-gray-200';
   const inactiveColor = dark ? 'text-gray-400' : 'text-gray-500';
@@ -49,6 +61,21 @@ export function BottomTabBar({ dark = false }) {
     { key: 'home', label: 'Home', Icon: HomeIcon, href: '/', active: pathname === '/' },
     { key: 'categories', label: 'Categories', Icon: GridIcon, href: '/search', active: pathname === '/search' || pathname.startsWith('/category') },
     { key: 'cart', label: 'Cart', Icon: CartIcon, href: '/cart', active: pathname === '/cart', badge: itemCount },
+    {
+      key: 'notifications',
+      label: 'Alerts',
+      Icon: BellIcon,
+      href: isAuthenticated ? '/notifications' : '/login',
+      active: pathname === '/notifications',
+      badge: isAuthenticated ? unreadCount : 0,
+    },
+    {
+      key: 'profile',
+      label: 'Profile',
+      Icon: UserIcon,
+      href: isAuthenticated ? '/account' : '/login',
+      active: pathname === '/account' || pathname === '/login',
+    },
   ];
 
   return (
@@ -60,28 +87,20 @@ export function BottomTabBar({ dark = false }) {
         <Link
           key={key}
           to={href}
-          className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-medium ${active ? '' : inactiveColor}`}
+          className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium ${active ? '' : inactiveColor}`}
           style={active ? { color: 'var(--color-primary)' } : undefined}
         >
           <span className="relative">
             <Icon className="w-5 h-5" />
             {badge > 0 && (
               <span className="absolute -top-1.5 -right-2 min-w-[1rem] h-4 flex items-center justify-center text-[9px] font-bold rounded-full bg-red-500 text-white px-1">
-                {badge}
+                {badge > 9 ? '9+' : badge}
               </span>
             )}
           </span>
           {label}
         </Link>
       ))}
-      <button
-        type="button"
-        onClick={() => setMobileOpen(true)}
-        className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-medium ${inactiveColor}`}
-      >
-        <MenuIcon className="w-5 h-5" />
-        Menu
-      </button>
     </nav>
   );
 }

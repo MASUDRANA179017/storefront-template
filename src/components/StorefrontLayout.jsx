@@ -22,21 +22,17 @@ export function StorefrontLayout() {
   const chrome = TEMPLATE_CHROME[templateSlug] ?? TEMPLATE_CHROME['modern-minimal'];
   const theme = resolveTheme(shop);
 
-  let headerStyle;
   let footerStyle;
   if (chrome.accentBackground) {
-    headerStyle = { backgroundColor: theme.primary };
     footerStyle = { backgroundColor: theme.primary };
   } else if (chrome.accentBorder) {
-    const accentBorder = { borderColor: theme.primary + '33' };
-    headerStyle = accentBorder;
-    footerStyle = accentBorder;
+    footerStyle = { borderColor: theme.primary + '33' };
   }
 
   return (
     <div className={`${chrome.wrapperClassName} pb-16 md:pb-0`} style={theme.style}>
       <HotlineBar shop={shop} />
-      <Header shop={shop} categories={categories} className={chrome.headerClassName} logoClassName={chrome.logoClassName} style={headerStyle} dark={!!chrome.dark} />
+      <Header shop={shop} categories={categories} logoClassName={chrome.logoClassName} />
       <CategoryIconRow categories={categories} />
       <main className="flex-1">
         <Outlet />

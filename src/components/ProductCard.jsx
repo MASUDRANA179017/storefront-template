@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../lib/CartContext';
+import { useAuth } from '../lib/AuthContext';
+import { useWishlist } from '../lib/WishlistContext';
 import { StarRating } from './StarRating';
 
 function CartPlusIcon({ className = 'w-4 h-4' }) {
@@ -10,8 +12,42 @@ function CartPlusIcon({ className = 'w-4 h-4' }) {
   );
 }
 
+function HeartIcon({ className = 'w-4 h-4', filled = false }) {
+  return (
+    <svg className={className} fill={filled ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21l-7.682-8.318a4.5 4.5 0 010-6.364z" />
+    </svg>
+  );
+}
+
 export function ProductCard({ product, className = '', imageClassName = 'aspect-square', layout = 'grid' }) {
   const { addItem } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { isWishlisted, toggle } = useWishlist();
+  const navigate = useNavigate();
+  const wishlisted = isWishlisted(product.slug);
+
+  function handleWishlistClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+    toggle(product);
+  }
+
+  const wishlistButton = (
+    <button
+      type="button"
+      onClick={handleWishlistClick}
+      aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+      className={`absolute top-2.5 right-2.5 w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm transition-colors ${wishlisted ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-500 hover:text-red-500'}`}
+    >
+      <HeartIcon filled={wishlisted} />
+    </button>
+  );
+
   const hasDiscount = product.compare_at_price && product.compare_at_price > product.effective_price;
   const outOfStock = product.stock_quantity <= 0;
   const lowStock = !outOfStock && product.stock_quantity <= 5;
@@ -96,26 +132,29 @@ export function ProductCard({ product, className = '', imageClassName = 'aspect-
 
   return (
     <div className={`group ${className}`}>
-      <Link to={`/product/${product.slug}`} className="block relative">
-        <div className={`card-hover overflow-hidden bg-gray-100 relative rounded-2xl ${imageClassName}`}>
-          {product.image_url ? (
-            <img
-              src={product.image_url}
-              alt={product.name}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No image</div>
-          )}
-          {badge}
-        </div>
-        <div className="mt-3">
-          <h3 className="font-semibold text-sm line-clamp-1">{product.name}</h3>
-          {ratingRow}
-          {priceRow}
-        </div>
+      <div className="relative">
+        <Link to={`/product/${product.slug}`} className="block">
+          <div className={`card-hover overflow-hidden bg-gray-100 relative rounded-2xl ${imageClassName}`}>
+            {product.image_url ? (
+              <img
+                src={product.image_url}
+                alt={product.name}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No image</div>
+            )}
+            {badge}
+          </div>
+        </Link>
+        {wishlistButton}
+      </div>
+      <Link to={`/product/${product.slug}`} className="block mt-3">
+        <h3 className="font-semibold text-sm line-clamp-1">{product.name}</h3>
+        {ratingRow}
+        {priceRow}
       </Link>
       <div className="mt-3 flex items-center gap-2">
         <div className="flex-1">{addToCartFullButton}</div>
