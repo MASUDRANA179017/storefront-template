@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../lib/CartContext';
 import { useAuth } from '../lib/AuthContext';
+import { useMobileMenu } from '../lib/MobileMenuContext';
 
 function SearchIcon({ className = 'w-5 h-5' }) {
   return (
@@ -55,7 +56,7 @@ function ChevronDownIcon({ className = 'w-4 h-4' }) {
 export function Header({ shop, categories = [], className = '', logoClassName = '', style, dark = false }) {
   const { itemCount, setDrawerOpen } = useCart();
   const { isAuthenticated } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { mobileOpen, setMobileOpen } = useMobileMenu();
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const categoriesRef = useRef(null);
   const navigate = useNavigate();
@@ -176,6 +177,21 @@ export function Header({ shop, categories = [], className = '', logoClassName = 
           )}
         </button>
       </div>
+
+      {/* Persistent mobile search bar — always visible, not tucked inside the drawer */}
+      <form onSubmit={handleSearchSubmit} className="md:hidden mt-3 flex gap-2">
+        <div className="relative flex-1">
+          <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40" />
+          <input
+            name="q"
+            placeholder="Search products…"
+            className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl border text-sm outline-none transition-colors ${inputStyle}`}
+          />
+        </div>
+        <button type="submit" className="icon-btn-accent px-4 py-2.5 rounded-xl text-sm font-bold shadow-soft flex-shrink-0">
+          Search
+        </button>
+      </form>
 
       {mobileOpen && createPortal(
         <div className="md:hidden fixed inset-0 z-50 flex">
