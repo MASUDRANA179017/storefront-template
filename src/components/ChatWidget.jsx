@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../lib/api';
 import { useAuth } from '../lib/AuthContext';
+import { useDarkMode } from '../lib/DarkModeContext';
 import { loadChatThread, saveChatThread } from '../lib/chatStorage';
 
 function ChatBubbleIcon({ className = 'w-7 h-7' }) {
@@ -33,8 +34,9 @@ function SendIcon({ className = 'w-4 h-4' }) {
 // get a name/phone gate before their first message; the resulting
 // conversation id + guest_token are cached per-shop in localStorage so a
 // returning guest continues the same thread instead of starting a new one.
-export function ChatWidget({ dark = false }) {
+export function ChatWidget() {
   const { isAuthenticated, token } = useAuth();
+  const { dark } = useDarkMode();
   const [shopName, setShopName] = useState('');
   const [open, setOpen] = useState(false);
   const [thread, setThread] = useState(() => loadChatThread());
