@@ -3,6 +3,8 @@ import { resolveTheme } from '../../lib/theme';
 import { orderedSections } from '../../lib/homepageSections';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
+import { HotlineBar } from '../../components/HotlineBar';
+import { CategoryIconRow } from '../../components/CategoryIconRow';
 import { HeroSlider } from '../../components/HeroSlider';
 import { FlashSaleSection } from '../../components/FlashSaleSection';
 import { ProductGridSection } from '../../components/ProductGridSection';
@@ -50,7 +52,8 @@ export function Home() {
   });
 
   return (
-    <div className="bg-gray-50 text-gray-900 min-h-screen font-sans" style={theme.style}>
+    <div className="bg-gray-50 text-gray-900 min-h-screen font-sans pb-16 md:pb-0" style={theme.style}>
+      <HotlineBar shop={shop} />
       <Header
         shop={shop}
         categories={categories}
@@ -58,9 +61,10 @@ export function Home() {
         logoClassName="text-white"
         style={{ backgroundColor: theme.primary }}
       />
+      <CategoryIconRow categories={categories} className="bg-white border-b border-gray-100" />
 
       {categories.length > 0 && (
-        <div className="flex gap-2 overflow-x-auto px-4 sm:px-6 py-3 bg-white border-b border-gray-100">
+        <div className="hidden md:flex gap-2 overflow-x-auto px-4 sm:px-6 py-3 bg-white border-b border-gray-100">
           {categories.map((c) => (
             <CategoryPill
               key={c.slug}
