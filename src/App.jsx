@@ -10,12 +10,16 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { AccountPage } from './pages/AccountPage';
 import { AboutPage } from './pages/AboutPage';
+import { WishlistPage } from './pages/WishlistPage';
+import { NotificationsPage } from './pages/NotificationsPage';
+import { CouponsPage } from './pages/CouponsPage';
 import { CartDrawer } from './components/CartDrawer';
 import { ExitToDashboardBar } from './components/ExitToDashboardBar';
 import { BottomTabBar } from './components/BottomTabBar';
 import { ChatWidget } from './components/ChatWidget';
 import { StorefrontLayout } from './components/StorefrontLayout';
 import { MobileMenuProvider } from './lib/MobileMenuContext';
+import { DarkModeProvider } from './lib/DarkModeContext';
 import { resolveTemplateSlug } from './lib/resolveTemplate';
 import { TEMPLATE_CHROME } from './lib/templateChrome';
 import { resolveTheme } from './lib/theme';
@@ -69,27 +73,32 @@ export default function App() {
 
   return (
     <HashRouter>
-      <MobileMenuProvider>
-        <ExitToDashboardBar />
-        <CartDrawer dark={isDark} />
-        <ChatWidget dark={isDark} />
-        <Routes>
-          <Route path="/" element={<HomeComponent />} />
-          <Route element={<StorefrontLayout />}>
-            <Route path="/product/:slug" element={<ProductPage />} />
-            <Route path="/category/:slug" element={<CategoryPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/order-confirmation/:orderNumber" element={<OrderConfirmationPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/account" element={<AccountPage />} />
-            <Route path="/about" element={<AboutPage />} />
-          </Route>
-        </Routes>
-        <BottomTabBar dark={isDark} />
-      </MobileMenuProvider>
+      <DarkModeProvider templateDefault={isDark}>
+        <MobileMenuProvider>
+          <ExitToDashboardBar />
+          <CartDrawer />
+          <ChatWidget />
+          <Routes>
+            <Route path="/" element={<HomeComponent />} />
+            <Route element={<StorefrontLayout />}>
+              <Route path="/product/:slug" element={<ProductPage />} />
+              <Route path="/category/:slug" element={<CategoryPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/order-confirmation/:orderNumber" element={<OrderConfirmationPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/wishlist" element={<WishlistPage />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
+              <Route path="/coupons" element={<CouponsPage />} />
+            </Route>
+          </Routes>
+          <BottomTabBar />
+        </MobileMenuProvider>
+      </DarkModeProvider>
     </HashRouter>
   );
 }
