@@ -70,14 +70,7 @@ export function Home() {
   return (
     <div className="bg-slate-950 text-slate-100 min-h-screen font-mono pb-16 md:pb-0" style={theme.style}>
       <HotlineBar shop={shop} />
-      <Header
-        shop={shop}
-        categories={categories}
-        className="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-xl flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-5 border-b"
-        logoClassName="text-[var(--color-primary)]"
-        style={accentBorder}
-        dark
-      />
+      <Header shop={shop} categories={categories} logoClassName="text-[var(--color-primary)]" />
       <CategoryIconRow categories={categories} className="border-b" style={accentBorder} />
 
       <HeroSlider banners={banners} theme={theme} fallback={fallbackHero} />

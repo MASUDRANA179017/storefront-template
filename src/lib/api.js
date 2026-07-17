@@ -51,10 +51,18 @@ export const api = {
     return request(shopUrl(`/reviews${query ? `?${query}` : ''}`));
   },
   getFaqs: () => request(shopUrl('/faqs')),
+  getCoupons: () => request(shopUrl('/coupons')),
   subscribeNewsletter: (email) => request(shopUrl('/newsletter/subscribe'), { method: 'POST', body: { email } }),
   sendChatMessage: (payload, token) => request(shopUrl('/chat'), { method: 'POST', body: payload, token }),
   getChatMessages: (conversationId, guestToken, token) =>
     request(shopUrl(`/chat/${conversationId}${!token && guestToken ? `?guest_token=${guestToken}` : ''}`), { token }),
+
+  getWishlist: (token) => request(shopUrl('/wishlist'), { token }),
+  toggleWishlist: (productSlug, token) => request(shopUrl(`/wishlist/${productSlug}`), { method: 'POST', token }),
+
+  getNotifications: (token) => request(shopUrl('/notifications'), { token }),
+  markNotificationRead: (id, token) => request(shopUrl(`/notifications/${id}/read`), { method: 'POST', token }),
+  markAllNotificationsRead: (token) => request(shopUrl('/notifications/read-all'), { method: 'POST', token }),
   checkout: (payload, token) => request(shopUrl('/checkout'), { method: 'POST', body: payload, token }),
   getOrder: (orderNumber) => request(shopUrl(`/orders/${orderNumber}`)),
   getMyOrders: (token) => request(shopUrl('/account/orders'), { token }),
