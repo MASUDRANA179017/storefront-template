@@ -3,6 +3,8 @@ import { resolveTheme } from '../../lib/theme';
 import { orderedSections } from '../../lib/homepageSections';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
+import { HotlineBar } from '../../components/HotlineBar';
+import { CategoryIconRow } from '../../components/CategoryIconRow';
 import { HeroSlider } from '../../components/HeroSlider';
 import { FlashSaleSection } from '../../components/FlashSaleSection';
 import { ProductGridSection } from '../../components/ProductGridSection';
@@ -62,13 +64,15 @@ export function Home() {
   });
 
   return (
-    <div className="bg-[#f8f6f2] text-gray-900 min-h-screen font-serif" style={theme.style}>
+    <div className="bg-[#f8f6f2] text-gray-900 min-h-screen font-serif pb-16 md:pb-0" style={theme.style}>
+      <HotlineBar shop={shop} />
       <Header
         shop={shop}
         categories={categories}
         className="sticky top-0 z-40 bg-[#f8f6f2]/90 backdrop-blur-xl px-4 sm:px-6 lg:px-8 py-4 sm:py-6"
         logoClassName="text-2xl italic tracking-wide"
       />
+      <CategoryIconRow categories={categories} />
 
       <HeroSlider banners={banners} theme={theme} fallback={fallbackHero} />
 
