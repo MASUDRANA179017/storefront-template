@@ -52,6 +52,9 @@ export const api = {
   },
   getFaqs: () => request(shopUrl('/faqs')),
   subscribeNewsletter: (email) => request(shopUrl('/newsletter/subscribe'), { method: 'POST', body: { email } }),
+  sendChatMessage: (payload, token) => request(shopUrl('/chat'), { method: 'POST', body: payload, token }),
+  getChatMessages: (conversationId, guestToken, token) =>
+    request(shopUrl(`/chat/${conversationId}${!token && guestToken ? `?guest_token=${guestToken}` : ''}`), { token }),
   checkout: (payload, token) => request(shopUrl('/checkout'), { method: 'POST', body: payload, token }),
   getOrder: (orderNumber) => request(shopUrl(`/orders/${orderNumber}`)),
   getMyOrders: (token) => request(shopUrl('/account/orders'), { token }),
