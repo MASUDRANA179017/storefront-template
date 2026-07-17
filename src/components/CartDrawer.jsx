@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../lib/CartContext';
+import { useDarkMode } from '../lib/DarkModeContext';
 
-export function CartDrawer({ dark = false }) {
+export function CartDrawer() {
   const { items, updateQuantity, removeItem, subtotal, isDrawerOpen, setDrawerOpen } = useCart();
+  const { dark } = useDarkMode();
 
   useEffect(() => {
     if (!isDrawerOpen) return;

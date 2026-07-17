@@ -56,11 +56,7 @@ export function Home() {
   return (
     <div className="bg-white text-gray-900 min-h-screen font-sans pb-16 md:pb-0" style={theme.style}>
       <HotlineBar shop={shop} />
-      <Header
-        shop={shop}
-        categories={categories}
-        className="sticky top-0 z-40 bg-white/85 backdrop-blur-xl flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-100"
-      />
+      <Header shop={shop} categories={categories} />
       <CategoryIconRow categories={categories} />
 
       <HeroSlider banners={banners} theme={theme} fallback={fallbackHero} />
